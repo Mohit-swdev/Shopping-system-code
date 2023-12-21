@@ -1,0 +1,118 @@
+The Works | Assignment | Web Developer | Mohit
+
+
+Assignment Title: Simple Online Shopping System
+
+
+Instructions:
+Create a Python program that simulates a simple online shopping system. The program should allow users to perform the following tasks:
+
+Display a list of available products along with their prices.
+Allow users to add products to their shopping cart.
+Calculate the total cost of the items in the shopping cart.
+Allow users to remove items from their shopping cart.
+Display the final list of items in the shopping cart and the total cost.
+
+
+Ans- Here, I have created a list of 5 products with associated prices and customized the sample output as per the preference, options will guide the user through the process.
+
+Code - 
+
+print("Welcome to the Online Shopping System!")
+
+#This block defines the list of available products along with their prices
+products = [
+    {"name": "T-shirt", "price": 10.00},
+    {"name": "Shirt", "price": 15.00},
+    {"name": "Lower", "price": 5.00},
+    {"name": "Jeans", "price": 20.00},
+    {"name": "Flip-Flop", "price": 7.00}
+]
+
+shopping_cart = {}
+
+#Functions to display available products
+print("\nAvailable Products:")
+for i, product in enumerate(products, 1):
+    print(f"{i}. {product['name']} - ${product['price']:.2f}")
+
+
+
+#Functions to add product to cart
+def addtocart():
+    product_number = int(input("\nEnter the product number (1-5): ")) - 1
+    quantity = int(input("Enter the quantity: "))
+    selected_product = products[product_number]
+    product_name = selected_product["name"]
+
+    if product_name in shopping_cart:
+        shopping_cart[product_name]["quantity"] += quantity
+    else:
+        selected_product["quantity"] = quantity
+        shopping_cart[product_name] = selected_product
+
+    print(f"{product_name} ({quantity} units) added to the cart.")
+
+
+
+#Function to remove product from cart
+def removefromcart():
+    if not shopping_cart:
+        print("Your cart is empty.")
+        return
+    
+    for i, (product_name, product_details) in enumerate(shopping_cart.items(), 1):
+        print("\n"f"{i}. {product_name} - ${product_details['price']:.2f} x {product_details['quantity']} = ${product_details['price'] * product_details['quantity']:.2f}")
+
+    product_number = int(input("Enter the product number (1-5) to remove: ")) - 1
+
+    if 0 <= product_number < len(shopping_cart):
+        selected_product_name = list(shopping_cart.keys())[product_number]
+        quantity_to_remove = int(input("Enter the quantity to remove: "))
+
+        if quantity_to_remove < shopping_cart[selected_product_name]["quantity"]:
+            shopping_cart[selected_product_name]["quantity"] -= quantity_to_remove
+            print(f"{quantity_to_remove} unit(s) of {selected_product_name} removed from the cart.")
+        elif quantity_to_remove == shopping_cart[selected_product_name]["quantity"]:
+            shopping_cart.pop(selected_product_name)
+            print(f"All units of {selected_product_name} removed from the cart.")
+        else:
+            print("Invalid quantity to remove. Please try again.")
+    else:
+        print("Invalid product number. Please try again.")
+
+
+
+#Function to show the final list of items in the shopping cart and the total cost.
+def showcart():
+    if not shopping_cart:
+        print("Your cart is empty.")
+        return
+    
+    total_cost = 0
+    print("\nShopping Cart:")
+    for i, (product_name, product_details) in enumerate(shopping_cart.items(), 1):
+        cost = product_details["price"] * product_details["quantity"]
+        total_cost += cost
+        print(f"{i}. {product_name} - ${product_details['price']:.2f} x {product_details['quantity']} = ${cost:.2f}")
+    print(f"Total: ${total_cost:.2f}")
+
+while True:
+    print("\nOptions:")
+    print("1. Add product to cart")
+    print("2. Remove product from cart")
+    print("3. Show cart")
+    print("4. Exit")
+    option = int(input("\nSelect an option: "))
+
+    if option == 1:
+        addtocart()
+    elif option == 2:
+        removefromcart()
+    elif option == 3:
+        showcart()
+    elif option == 4:
+        print("\nThank you for shopping with us!")
+        break
+    else:
+        print("Invalid option. Please try again.")
